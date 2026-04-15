@@ -1,3 +1,8 @@
+import pandas as pd
+import matplotlib.pyplot as plt
+df=pd.DataFrame({"name":["srijon"],"kills":[12],"deaths":[2],"wins":[2]})
+print(df)
+df.to_csv("game_states.csv")
 def show_line():
     print("-"*36,"\n")
 print(f"\n--------GAME STATS ANALYZER--------\n")
@@ -17,3 +22,4 @@ while True:
     show_line()
     if option==1:
         pass
+
