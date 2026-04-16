@@ -16,7 +16,8 @@ while True:
     try:
         option=int(input("Choose option: "))
     except ValueError:
-        print("\nOption must be an integer. Please enter it correctly")
+        print("\nOption must be an integer. Please enter it correctly\n")
+        continue
     show_line()
     if option==1:
         while True:
@@ -41,3 +42,14 @@ while True:
             except ValueError:
                 print("\nMatches must be an integer. Please enter player stats correctly")
                 continue
+            game_stats={"Name":name,"Deaths":deaths,"Wins":wins,"Mathch Played":match_played}
+            df=pd.concat([df,pd.DataFrame([game_stats])],ignore_index=True)
+            df.to_csv("game_stats.csv",index=True)
+            print(df)
+            break
+        if option==2:
+            pass
+        else:
+            print("Please enter option correctly!")
+            continue
+            
