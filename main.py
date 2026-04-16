@@ -1,8 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-df=pd.DataFrame({"name":["srijon"],"kills":[12],"deaths":[2],"wins":[2]})
-print(df)
-df.to_csv("game_states.csv")
+df=pd.read_csv("game_stats.csv")
 def show_line():
     print("-"*36,"\n")
 print(f"\n--------GAME STATS ANALYZER--------\n")
@@ -21,5 +19,25 @@ while True:
         print("\nOption must be an integer. Please enter it correctly")
     show_line()
     if option==1:
-        pass
-
+        while True:
+            name=input("Name: ")
+            try:
+                kills=int(input("Kills: "))
+            except ValueError:
+                print("\nKills must be an integer. Please enter player stats correctly")
+                continue
+            try:
+                deaths=int(input("Deaths: "))
+            except ValueError:
+                print("\nDeaths must be an integer. Please enter player stats correctly")
+                continue    
+            try:
+                wins=int(input("Wins: "))
+            except ValueError:
+                print("\nWins must be an integer. Please enter player stats correctly")
+                continue
+            try:
+                match_played=int(input("Total Match Played: "))
+            except ValueError:
+                print("\nMatches must be an integer. Please enter player stats correctly")
+                continue
