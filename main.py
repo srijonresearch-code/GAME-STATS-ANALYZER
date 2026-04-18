@@ -102,7 +102,16 @@ while True:
                 break
     elif option==2:
         print(df)
-        
+    elif option ==7:
+        df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
+        df.to_csv("game_stats.csv",index=False)
+        print("Program reseted successfully!")
+        show_line(len("Program reseted successfully!"))
+        break    
+    elif option==8:
+        print("Program exited successfully!")
+        show_line(len("Program exited successfully!"))
+        break
     elif 0>=option or option>8:
         print("Please enter option correctly!")
         show_line(len("Please enter option correctly!"))
