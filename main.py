@@ -4,6 +4,11 @@ try:
     df=pd.read_csv("game_stats.csv")
 except FileNotFoundError:
     df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
+
+#K/D Ratio = kills / deaths
+#Win Rate = wins / matches
+#Avg Kills = kills / matches
+
 def show_line(dashes):
     print("-"*dashes,"\n")
 print(f"\n--------GAME STATS ANALYZER--------\n")
@@ -61,8 +66,8 @@ while True:
                         show_line(len("Wins must be a positive integer. Please enter it correctly."))
                         continue
                 except ValueError:
-                    print("Wins must be a positive integer. Please enter it correctly.")
-                    show_line(len("Wins must be a positive integer. Please enter it correctly."))
+                    print("Wins must be an integer. Please enter it correctly.")
+                    show_line(len("Wins must be an integer. Please enter it correctly."))
                     continue
             while True:
                 try:
@@ -90,7 +95,7 @@ while True:
                 show_line(len("Deaths can not be possible when any match is not played. Please enter player stats correctly!"))
                 continue
             elif matches_played<wins:
-                print("The number of wins can not ne higher than the number of total matches played. Please enter player stats correctly!")
+                print("The number of wins can not be higher than the number of total matches played. Please enter player stats correctly!")
                 show_line(len("The number of wins can not be higher than the number of total matches played. Please enter player stats correctly!"))
                 continue
             else:
@@ -105,9 +110,8 @@ while True:
     elif option ==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
-        print("Program reseted successfully!")
-        show_line(len("Program reseted successfully!"))
-        break    
+        print("Program reset successfully!")
+        show_line(len("Program reset successfully!"))    
     elif option==8:
         print("Program exited successfully!")
         show_line(len("Program exited successfully!"))
@@ -115,5 +119,4 @@ while True:
     elif 0>=option or option>8:
         print("Please enter option correctly!")
         show_line(len("Please enter option correctly!"))
-        continue
             
