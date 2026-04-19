@@ -6,6 +6,14 @@ except FileNotFoundError:
     df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
 
 #K/D Ratio = kills / deaths
+def calculate_kd_ratio(kills,deaths):
+    if kills==0 and deaths==0:
+        kd_ratio=0
+    elif deaths==0:
+        kd_ratio=kills
+    else:
+        kd_ratio=kills/deaths
+    return kd_ratio    
 #Win Rate = wins / matches
 #Avg Kills = kills / matches
 
@@ -107,6 +115,24 @@ while True:
                 break
     elif option==2:
         print(df)
+        show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
+        while True:
+            try:
+                index=int(input("Enter index to analyze: "))
+                show_line(len("Enter index to analyze:   "))
+            except ValueError:
+                print("Index must be an integer. Please enter it correctly!")
+                show_line(len("Index must be an integer. Please enter it correctly!"))
+                continue
+            if index>=0 and index<len(df.index):
+               print(f"Name: {df["Name"][index]}")
+               print(f"K/D Ratio: {calculate_kd_ratio(df["Kills"][index],df["Deaths"][index]):.2f}")
+               #start from here
+            else:
+                print(f"Check the list carefully and enter index between {0} and {len(df.index)-1}.")
+                show_line(len(f"Check the list carefully and enter index between {0} and {len(df.index)-1}."))
+                continue 
+            break
     elif option ==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
