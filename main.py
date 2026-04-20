@@ -15,6 +15,13 @@ def calculate_kd_ratio(kills,deaths):
         kd_ratio=kills/deaths
     return kd_ratio    
 #Win Rate = wins / matches
+def calculate_win_rate(wins,matches):
+    if matches==0:
+        win_rate=0.00
+    else:
+        win_rate=wins/matches
+    return win_rate
+    
 #Avg Kills = kills / matches
 
 def show_line(dashes):
@@ -90,17 +97,9 @@ while True:
                     print("Matches must be a positive integer. Please enter it correctly.")
                     show_line(len("Matches must be a positive integer. Please enter it correctly."))
                     continue
-            if matches_played==0 and kills!=0 and deaths!=0:
-                print("kills and deaths can not be possible when any match is not played. Please enter player stats correctly!")
-                show_line(len("kills and deaths can not be possible when any match is not played. Please enter player stats correctly!"))
-                continue
-            elif matches_played==0 and kills!=0:
-                print("kills can not be possible when any match is not played. Please enter player stats correctly!")
-                show_line(len("kills can not be possible when any match is not played. Please enter player stats correctly!"))
-                continue
-            elif matches_played==0 and deaths!=0:
-                print("Deaths can not be possible when any match is not played. Please enter player stats correctly!")
-                show_line(len("Deaths can not be possible when any match is not played. Please enter player stats correctly!"))
+            if matches_played==0 and (kills!=0 or wins!=0 or deaths!=0):
+                print("kills, deaths or wins can not be possible when any match is not played. Please enter player stats correctly!")
+                show_line(len("kills, deaths or wins can not be possible when any match is not played. Please enter player stats correctly!"))
                 continue
             elif matches_played<wins:
                 print("The number of wins can not be higher than the number of total matches played. Please enter player stats correctly!")
@@ -118,21 +117,24 @@ while True:
         show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
         while True:
             try:
-                index=int(input("Enter index to analyze: "))
-                show_line(len("Enter index to analyze:   "))
+                index=int(input("Enter index to analyze player stats or enter (-1) to return to the Main menu: "))
+                show_line(len("Enter index to analyze player stats or enter (-1) to return to the Main menu:   "))
             except ValueError:
                 print("Index must be an integer. Please enter it correctly!")
                 show_line(len("Index must be an integer. Please enter it correctly!"))
                 continue
             if index>=0 and index<len(df.index):
-               print(f"Name: {df["Name"][index]}")
-               print(f"K/D Ratio: {calculate_kd_ratio(df["Kills"][index],df["Deaths"][index]):.2f}")
+               print(f"Name: {df['Name'][index]}")
+               print(f"K/D Ratio: {calculate_kd_ratio(df['Kills'][index],df['Deaths'][index]):.2f}")
+               print(f"Win Rate: {calculate_win_rate(df['Wins'][index],df['Matches Played'][index]):.2f}")
                #start from here
-            else:
+            elif index!=-1:
                 print(f"Check the list carefully and enter index between {0} and {len(df.index)-1}.")
                 show_line(len(f"Check the list carefully and enter index between {0} and {len(df.index)-1}."))
                 continue 
-            break
+            elif index==-1:
+                break
+            continue
     elif option ==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
