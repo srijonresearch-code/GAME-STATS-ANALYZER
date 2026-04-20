@@ -14,6 +14,7 @@ def calculate_kd_ratio(kills,deaths):
     else:
         kd_ratio=kills/deaths
     return kd_ratio    
+
 #Win Rate = wins / matches
 def calculate_win_rate(wins,matches):
     if matches==0:
@@ -23,7 +24,12 @@ def calculate_win_rate(wins,matches):
     return win_rate
     
 #Avg Kills = kills / matches
-
+def calculate_average_kills(kills,matches):
+    if matches==0:
+        avgerage_kills=0
+    else:
+        avgerage_kills=kills/matches
+    return avgerage_kills
 def show_line(dashes):
     print("-"*dashes,"\n")
 print(f"\n--------GAME STATS ANALYZER--------\n")
@@ -126,8 +132,9 @@ while True:
             if index>=0 and index<len(df.index):
                print(f"Name: {df['Name'][index]}")
                print(f"K/D Ratio: {calculate_kd_ratio(df['Kills'][index],df['Deaths'][index]):.2f}")
-               print(f"Win Rate: {calculate_win_rate(df['Wins'][index],df['Matches Played'][index]):.2f}")
-               #start from here
+               print(f"Win Rate: {calculate_win_rate(df['Wins'][index],df['Matches Played'][index])*100:.2f}%")
+               print(f"Average Kills: {calculate_average_kills(df['Kills'][index],df['Matches Played'][index]):.2f}")
+               show_line(len("Average Kills:      "))
             elif index!=-1:
                 print(f"Check the list carefully and enter index between {0} and {len(df.index)-1}.")
                 show_line(len(f"Check the list carefully and enter index between {0} and {len(df.index)-1}."))
@@ -135,13 +142,16 @@ while True:
             elif index==-1:
                 break
             continue
-    elif option ==7:
+    elif option==3:
+        print("--------Leaderboard--------")
+        #start from here
+    elif option==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
         print("Program reset successfully!")
         show_line(len("Program reset successfully!"))    
     elif option==8:
-        print("Program exited successfully!")
+        print("\nProgram exited successfully!")
         show_line(len("Program exited successfully!"))
         break
     elif 0>=option or option>8:
