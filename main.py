@@ -144,7 +144,13 @@ while True:
             continue
     elif option==3:
         print("--------Leaderboard--------")
-        #start from here
+        index=0
+        name_kda={df["Name"][index]:calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])}
+        while len(df.index)-1>index>=0:
+            name_kda.update({df["Name"][index+1]:calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1])})
+            index+=1
+        sorted_name_kda=dict(sorted(name_kda.items(), key=lambda item:item[1], reverse=True))
+        print(sorted_name_kda)
     elif option==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
