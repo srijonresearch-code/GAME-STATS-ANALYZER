@@ -26,10 +26,10 @@ def calculate_win_rate(wins,matches):
 #Avg Kills = kills / matches
 def calculate_average_kills(kills,matches):
     if matches==0:
-        avgerage_kills=0
+        average_kills=0
     else:
-        avgerage_kills=kills/matches
-    return avgerage_kills
+        average_kills=kills/matches
+    return average_kills
 def show_line(dashes):
     print("-"*dashes,"\n")
 print(f"\n--------GAME STATS ANALYZER--------\n")
@@ -119,6 +119,10 @@ while True:
                 show_line(len("Player stats added successfully!"))
                 break
     elif option==2:
+        if df.empty:
+            print("No player data available.")
+            show_line(len("No player data available."))
+            continue
         print(df)
         show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
         while True:
@@ -143,14 +147,27 @@ while True:
                 break
             continue
     elif option==3:
-        print("--------Leaderboard--------")
+        #start from here
+        if df.empty:
+            print("No player data available.")
+            show_line(len("No player data available."))
+            continue
+        print("---------Leaderboard---------\n")
         index=0
-        name_kda={df["Name"][index]:calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])}
+        name_kd={df["Name"][index]:calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])}
         while len(df.index)-1>index>=0:
-            name_kda.update({df["Name"][index+1]:calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1])})
+            name_kd.update({df["Name"][index+1]:calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1])})
             index+=1
-        sorted_name_kda=dict(sorted(name_kda.items(), key=lambda item:item[1], reverse=True))
-        
+        index=1
+        sorted_name_kd=dict(sorted(name_kd.items(), key=lambda item:item[1], reverse=True))
+        print("-"*29)
+        print(f"|{' ':3}{'Name':12}{'|':6}{'K/D':6}|")
+        print("-"*29)
+        for name,kd in sorted_name_kd.items():
+            print(f"|{index:2}.{name:12}{'|':6}{kd:.2f}{' ':2}|")
+            print("-"*29)
+            index+=1
+        print("\n")
     elif option==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
