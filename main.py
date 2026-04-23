@@ -147,27 +147,60 @@ while True:
                 break
             continue
     elif option==3:
-        #start from here
-        if df.empty:
-            print("No player data available.")
-            show_line(len("No player data available."))
-            continue
-        print("---------Leaderboard---------\n")
-        index=0
-        name_kd={df["Name"][index]:calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])}
-        while len(df.index)-1>index>=0:
-            name_kd.update({df["Name"][index+1]:calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1])})
-            index+=1
-        index=1
-        sorted_name_kd=dict(sorted(name_kd.items(), key=lambda item:item[1], reverse=True))
-        print("-"*29)
-        print(f"|{' ':3}{'Name':12}{'|':6}{'K/D':6}|")
-        print("-"*29)
-        for name,kd in sorted_name_kd.items():
-            print(f"|{index:2}.{name:12}{'|':6}{kd:.2f}{' ':2}|")
-            print("-"*29)
-            index+=1
-        print("\n")
+        while True:    
+            print(f"1. Rank by K/D")
+            print(f"2. Rank by Win Rate")
+            try:
+                option=int(input("Enter option or enter (-1) to return to the Main menu:"))
+            except ValueError:
+                print(f"Option must be an integer. Please enter it correctly")
+                show_line(len("Option must be an integer. Please enter it correctly"))
+                continue
+            if df.empty:
+                print("No player data available.")
+                show_line(len("No player data available."))
+                break
+            if option==1:
+                print("\n---------Leaderboard---------\n")
+                index=0
+                rank_kd={df["Name"][index]:calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])}
+                while len(df.index)-1>index>=0:
+                    rank_kd.update({df["Name"][index+1]:calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1])})
+                    index+=1
+                index=1
+                sorted_rank_kd=dict(sorted(rank_kd.items(), key=lambda item:item[1], reverse=True))
+                print("-"*29)
+                print(f"|{' ':3}{'Name':12}{'|':6}{'K/D':6}|")
+                print("-"*29)
+                for name,kd in sorted_rank_kd.items():
+                    print(f"|{index:2}.{name:12}{'|':6}{kd:.2f}{' ':2}|")
+                    print("-"*29)
+                    index+=1
+                print("\n")
+            elif option==2:
+                print("\n----------Leaderboard----------\n")
+                index=0
+                rank_win_rate={df["Name"][index]:calculate_win_rate(df["Wins"][index],df["Matches Played"][index])}
+                while len(df.index)-1>index>=0:
+                    rank_win_rate.update({df["Name"][index+1]:calculate_win_rate(df["Wins"][index+1],df["Matches Played"][index+1])})
+                    index+=1
+                index=1
+                sorted_rank_win_rate=dict(sorted(rank_win_rate.items(),key=lambda item:item[1],reverse=True))
+                print("-"*31)
+                print(f"|{' ':3}{'Name':12}{'|':6}{'Win Rate':6}|")
+                print("-"*31)
+                for name,win_rate in sorted_rank_win_rate.items():
+                    print(f"|{index:2}.{name:12}{'|':6}{win_rate:.2f}%{' ':3}|")
+                    print("-"*31)
+                    index+=1
+                print("\n")
+            elif option==-1:
+                print('\n')
+                break
+            else:
+                print("\nPlease enter option correctly!")
+                show_line(len("Please enter option correctly!"))
+                continue
     elif option==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
