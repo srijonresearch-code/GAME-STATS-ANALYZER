@@ -202,6 +202,10 @@ while True:
                 show_line(len("Please enter option correctly!"))
                 continue
     elif option==5:
+        if df.empty:
+                print("No player data available.")
+                show_line(len("No player data available."))
+                continue
         print(df)
         show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
         while True:
@@ -288,6 +292,32 @@ while True:
                         print("Player stats updated successfully!")
                         show_line(len("Player stats updated successfully!"))
                         break
+            else:
+                print("\nPlease enter index correctly!")
+                show_line(len("Please enter index correctly!"))
+                continue
+    elif option==6:
+        if df.empty:
+                print("No player data available.")
+                show_line(len("No player data available."))
+                continue
+        print(df)
+        show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
+        while True:
+            try:
+                index=int(input("Enter index to update player stats or enter (-1) to return to the Main menu: "))
+                show_line(len("Enter index to update player stats or enter (-1) to return to the Main menu:   "))
+            except ValueError:
+                print("Index must be an integer. Please enter it correctly!")
+                show_line(len("Index must be an integer. Please enter it correctly!"))
+                continue
+            if len(df.index)>index>=0:
+                df=df.drop(index=index).reset_index(drop=True)
+                df.to_csv("game_stats.csv",index=False)
+                break
+            elif index==-1:
+                print("\n")
+                break
             else:
                 print("\nPlease enter index correctly!")
                 show_line(len("Please enter index correctly!"))
