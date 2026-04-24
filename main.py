@@ -201,6 +201,97 @@ while True:
                 print("\nPlease enter option correctly!")
                 show_line(len("Please enter option correctly!"))
                 continue
+    elif option==5:
+        print(df)
+        show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
+        while True:
+            try:
+                index=int(input("Enter index to update player stats or enter (-1) to return to the Main menu: "))
+                show_line(len("Enter index to update player stats or enter (-1) to return to the Main menu:   "))
+            except ValueError:
+                print("Index must be an integer. Please enter it correctly!")
+                show_line(len("Index must be an integer. Please enter it correctly!"))
+                continue
+            if index==-1:
+                print("\n")
+                break
+            elif len(df.index)>index>=0:
+                while True:
+                    name=input("Name: ")
+                    while True:
+                        try:
+                            kills=int(input("Kills: "))
+                            if kills>=0:
+                                break
+                            else:
+                                print("Kills must be a positive integer. Please enter it correctly.")
+                                show_line(len("Kills must be a positive integer. Please enter it correctly."))
+                                continue
+                        except ValueError:
+                            print("Kills must be a positive integer. Please enter it correctly.")
+                            show_line(len("Kills must be a positive integer. Please enter it correctly."))
+                            continue
+                    while True:
+                        try:
+                            deaths=int(input("Deaths: "))
+                            if deaths>=0:
+                                break
+                            else:
+                                print("Deaths must be a positive integer. Please enter it correctly.")
+                                show_line(len("Deaths must be a positive integer. Please enter it correctly."))
+                                continue
+                        except ValueError:
+                            print("Deaths must be a positive integer. Please enter it correctly.")
+                            show_line(len("Deaths must be a positive integer. Please enter it correctly."))
+                            continue    
+                    while True:
+                        try:
+                            wins=int(input("Wins: "))
+                            if wins>=0:
+                                break
+                            else:
+                                print("Wins must be a positive integer. Please enter it correctly.")
+                                show_line(len("Wins must be a positive integer. Please enter it correctly."))
+                                continue
+                        except ValueError:
+                            print("Wins must be an integer. Please enter it correctly.")
+                            show_line(len("Wins must be an integer. Please enter it correctly."))
+                            continue
+                    while True:
+                        try:
+                            matches_played=int(input("Total Matches Played: "))
+                            if matches_played>=0:
+                                break
+                            else:
+                                print("Matches must be a positive integer. Please enter it correctly.")
+                                show_line(len("Matches must be a positive integer. Please enter it correctly."))
+                                continue
+                        except ValueError:
+                            print("Matches must be a positive integer. Please enter it correctly.")
+                            show_line(len("Matches must be a positive integer. Please enter it correctly."))
+                            continue
+                    if matches_played==0 and (kills!=0 or wins!=0 or deaths!=0):
+                        print("kills, deaths or wins can not be possible when any match is not played. Please enter player stats correctly!")
+                        show_line(len("kills, deaths or wins can not be possible when any match is not played. Please enter player stats correctly!"))
+                        continue
+                    elif matches_played<wins:
+                        print("The number of wins can not be higher than the number of total matches played. Please enter player stats correctly!")
+                        show_line(len("The number of wins can not be higher than the number of total matches played. Please enter player stats correctly!"))
+                        continue
+                    else:
+                        df.loc[index,'Name']=name
+                        df.loc[index,'Kills']=kills
+                        df.loc[index,'Deaths']=deaths
+                        df.loc[index,'Wins']=wins
+                        df.loc[index,'Matches Played']=matches_played
+                        df.to_csv("game_stats.csv",index=False)
+                        print("Player stats updated successfully!")
+                        show_line(len("Player stats updated successfully!"))
+                        break
+            else:
+                print("\nPlease enter index correctly!")
+                show_line(len("Please enter index correctly!"))
+                continue
     elif option==7:
         df=pd.DataFrame(columns=["Name","Kills","Deaths","Wins","Matches Played"])
         df.to_csv("game_stats.csv",index=False)
