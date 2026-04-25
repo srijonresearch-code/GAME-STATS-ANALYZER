@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 try:
     df=pd.read_csv("game_stats.csv")
@@ -197,6 +198,55 @@ while True:
             elif option==-1:
                 print('\n')
                 break
+            else:
+                print("\nPlease enter option correctly!")
+                show_line(len("Please enter option correctly!"))
+                continue
+    elif option==4:
+        if df.empty:
+                print("No player data available.")
+                show_line(len("No player data available."))
+                continue
+        print(f"1. K/D Ratio Chart")
+        print(f"2. Win Rate Chart")
+        print(f"3. Kills vs Deaths Chart")
+        print(f"4. Wins vs Losses Chart")
+        while True:
+            try:
+                option=int(input("Enter option or enter (-1) to return to the Main menu:"))
+            except ValueError:
+                print(f"Option must be an integer. Please enter it correctly")
+                show_line(len("Option must be an integer. Please enter it correctly"))
+                continue
+            if option==-1:
+                print('\n')
+                break
+            elif option==1:
+                pass
+            #start from here
+            elif option==3: 
+                x = np.arange(len(df.index))
+                plt.bar(x-0.1, df["Kills"], 0.2, label="Kills")
+                plt.bar(x+0.1, df["Deaths"], 0.2, label="Deaths")
+                plt.xticks(x, df["Name"])
+                plt.title("Kills vs Deaths Chart")
+                plt.xlabel("Names")
+                plt.ylabel("Kills,Deaths")
+                plt.legend()
+                plt.xticks(rotation=45, ha="right")
+                plt.show()
+            elif option==4:
+                x=np.arange(len(df.index))
+                plt.bar(x-0.1, df["Wins"], 0.2, label="Wins")
+                losses=df["Matches Played"]-df["Wins"]
+                plt.bar(x+0.1,losses,0.2,label="losses")
+                plt.xticks(x,df["Name"])
+                plt.title("Wins vs Losses Chart")
+                plt.xlabel("Name")
+                plt.ylabel("Wins,Losses")
+                plt.xticks(rotation=45,ha="right")
+                plt.legend()
+                plt.show()
             else:
                 print("\nPlease enter option correctly!")
                 show_line(len("Please enter option correctly!"))
