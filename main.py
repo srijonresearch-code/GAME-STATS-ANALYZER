@@ -222,8 +222,13 @@ while True:
                 print('\n')
                 break
             elif option==1:
-                pass
-            #start from here
+                index=0
+                kd_list=[calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])]
+                while len(df.index)-1>index>=0:
+                    kd_list.append(calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1]))
+                    index+=1
+                df["KD"]=kd_list
+                print(df["KD"]) #start from here
             elif option==3: 
                 x = np.arange(len(df.index))
                 plt.bar(x-0.1, df["Kills"], 0.2, label="Kills")
