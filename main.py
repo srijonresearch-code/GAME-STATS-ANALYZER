@@ -417,4 +417,3 @@ while True:
     elif 0>=option or option>8:
         print("Please enter option correctly!")
         show_line(len("Please enter option correctly!"))
-            
