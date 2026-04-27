@@ -222,10 +222,40 @@ while True:
                 print('\n')
                 break
             elif option==1:
-                pass
-            #start from here
+                index=0
+                kd_list=[calculate_kd_ratio(df["Kills"][index],df["Deaths"][index])]
+                while len(df.index)-1>index>=0:
+                    kd_list.append(calculate_kd_ratio(df["Kills"][index+1],df["Deaths"][index+1]))
+                    index+=1
+                plt.figure(figsize=(16,6))
+                x=np.arange(len(df.index))
+                plt.bar(x,kd_list,label="K/D")
+                plt.xticks(x,df["Name"])
+                plt.xlabel("Name")
+                plt.ylabel("K/D Ratio")
+                plt.legend()
+                plt.xticks(rotation=45,ha="right")
+                plt.title("K/D Ratio Chart")
+                plt.show()
+            elif option==2:
+                index=0
+                win_rate_list=[calculate_win_rate(df["Wins"][index],df["Matches Played"][index])]
+                while len(df.index)-1>index>=0:
+                    win_rate_list.append(calculate_win_rate(df["Wins"][index+1],df["Matches Played"][index+1]))
+                    index+=1
+                plt.figure(figsize=(16,6))
+                x=np.arange(len(df.index))
+                plt.bar(x,win_rate_list,label="Win Rate")
+                plt.xticks(x,df["Name"])
+                plt.legend()
+                plt.xlabel("Name")
+                plt.ylabel("Win Rate(%)")
+                plt.title("Win Rate Chart")
+                plt.xticks(rotation=45,ha="right")
+                plt.show()
             elif option==3: 
                 x = np.arange(len(df.index))
+                plt.figure(figsize=(16,6))
                 plt.bar(x-0.1, df["Kills"], 0.2, label="Kills")
                 plt.bar(x+0.1, df["Deaths"], 0.2, label="Deaths")
                 plt.xticks(x, df["Name"])
@@ -237,6 +267,7 @@ while True:
                 plt.show()
             elif option==4:
                 x=np.arange(len(df.index))
+                plt.figure(figsize=(16,6))
                 plt.bar(x-0.1, df["Wins"], 0.2, label="Wins")
                 losses=df["Matches Played"]-df["Wins"]
                 plt.bar(x+0.1,losses,0.2,label="losses")
@@ -355,8 +386,8 @@ while True:
         show_line(len("     Name  Kills  Deaths  Wins  Matches Played  "))
         while True:
             try:
-                index=int(input("Enter index to update player stats or enter (-1) to return to the Main menu: "))
-                show_line(len("Enter index to update player stats or enter (-1) to return to the Main menu:   "))
+                index=int(input("Enter index to Delete player stats or enter (-1) to return to the Main menu: "))
+                show_line(len("Enter index to Delete player stats or enter (-1) to return to the Main menu:   "))
             except ValueError:
                 print("Index must be an integer. Please enter it correctly!")
                 show_line(len("Index must be an integer. Please enter it correctly!"))
@@ -364,6 +395,8 @@ while True:
             if len(df.index)>index>=0:
                 df=df.drop(index=index).reset_index(drop=True)
                 df.to_csv("game_stats.csv",index=False)
+                print("Player stats deleted successfully!")
+                show_line(len("Player stats deleted successfully!"))
                 break
             elif index==-1:
                 print("\n")
